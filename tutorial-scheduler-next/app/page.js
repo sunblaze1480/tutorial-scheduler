@@ -1,5 +1,6 @@
 import TutorialsList from "./components/TutorialsList";
 import TutorialsForm from "./components/TutorialsForm";
+import { Analytics } from "@vercel/analytics/next";
 
 export default function Home() {
   return (
@@ -25,6 +26,7 @@ export default function Home() {
       <footer className="text-center text-xs text-gray-500 pt-4 mt-8 border-t border-gray-200">
             <p>© {new Date().getFullYear()} Tutorial Scheduler. All rights reserved.</p>
       </footer>
+      <Analytics/>
     </div>
   );
 }
