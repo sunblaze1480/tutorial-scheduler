@@ -1,0 +1,143 @@
+"use client"
+
+import { useState, useEffect } from "react"
+
+export default function TutorialsList() {
+    const [tutorials, setTutorials] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        // Simulate a small loading delay for better UX
+        const timer = setTimeout(() => {
+            const storedTutorials = JSON.parse(localStorage.getItem("tutorials") || "[]")
+            setTutorials(storedTutorials)
+            setIsLoading(false)
+        }, 300)
+        
+        return () => clearTimeout(timer)
+    }, [])
+
+    const handleStatusChange = (e, id) => {
+        const value = e.target.value
+        const updated = tutorials.map((tut) => 
+            tut.id === id ? {...tut, status: value} : tut
+        )
+        setTutorials(updated)
+        localStorage.setItem("tutorials", JSON.stringify(updated))
+    }
+
+    const getStatusBadgeClass = (status) => {
+        switch(status) {
+            case "Completed":
+                return "bg-green-100 text-green-800 border-green-200"
+            case "Ongoing":
+                return "bg-yellow-100 text-yellow-800 border-yellow-200"
+            default:
+                return "bg-gray-100 text-gray-800 border-gray-200"
+        }
+    }
+    
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' }
+        return new Date(dateString).toLocaleDateString(undefined, options)
+    }
+
+    return (
+        <div className="w-full mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="bg-indigo-600 py-4 px-6 flex items-center justify-between">
+                <h2 className="text-xl font-bold text-white">My Tutorials</h2>
+                <div className="bg-white bg-opacity-20 rounded-full p-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                </div>
+            </div>
+            
+            <div>
+                {isLoading ? (
+                    <div className="flex justify-center items-center py-12">
+                        <svg className="animate-spin h-8 w-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                ) : tutorials.length === 0 ? (
+                    <div className="text-center py-10 px-4">
+                        <div className="bg-gray-50 rounded-full p-3 w-16 h-16 mx-auto flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <h3 className="mt-4 text-lg font-medium text-gray-900">No tutorials yet</h3>
+                        <p className="mt-2 text-sm text-gray-500">Get started by adding your first tutorial above.</p>
+                    </div>
+                ) : (
+                    <ul className="divide-y divide-gray-200">
+                        {tutorials.map((tutorial) => (
+                            <li key={tutorial.id} className="py-4 px-2 hover:bg-gray-50 rounded-lg transition-colors">
+                                <div className="flex flex-col space-y-3">
+                                    <div className="flex justify-between items-start">
+                                        <h3 className="font-medium text-gray-900 line-clamp-1">{tutorial.title}</h3>
+                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusBadgeClass(tutorial.status)}`}>
+                                            {tutorial.status}
+                                        </span>
+                                    </div>
+                                    
+                                    <a 
+                                        href={tutorial.url} 
+                                        target="_blank" 
+                                        rel="noopener noreferrer"
+                                        className="text-indigo-600 hover:text-indigo-800 text-sm truncate flex items-center"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                        </svg>
+                                        <span className="truncate">{tutorial.url}</span>
+                                    </a>
+                                    
+                                    <div className="flex text-sm text-gray-500 bg-gray-50 rounded-md p-2">
+                                        <div className="flex items-center m-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span>{formatDate(tutorial.startDate)}</span>
+                                        </div>
+                                        <div className="flex items-center m-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span>{formatDate(tutorial.endDate)}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="mt-1">
+                                        <label htmlFor={`status-${tutorial.id}`} className="block text-xs font-medium text-gray-700 mb-1">
+                                            Update Status:
+                                        </label>
+                                        <div className="relative">
+                                            <select
+                                                id={`status-${tutorial.id}`}
+                                                value={tutorial.status}
+                                                onChange={(e) => handleStatusChange(e, tutorial.id)}
+                                                className="block w-full pl-8 pr-4 py-1.5 text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                            >
+                                                <option value="Pending">Pending</option>
+                                                <option value="Ongoing">Ongoing</option>
+                                                <option value="Completed">Completed</option>
+                                            </select>
+                                            <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+        </div>
+    )
+}
