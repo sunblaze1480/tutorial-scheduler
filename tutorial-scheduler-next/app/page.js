@@ -13,12 +13,11 @@ export default function Home() {
           <h1 className="text-3xl font-bold text-gray-900">Tutorial Scheduler</h1>
           <p className="mt-2 text-sm text-gray-600">Track and manage your learning journey</p>
       </header>
-      <div className=" space-y-10 flex flex-row">
-
-        <div className="w-1/3">
+      <div className="space-y-10 flex flex-col md:flex-row gap-6">
+        <div className="w-full md:w-1/3">
           <TutorialsForm />
         </div>
-        <div className="w-2/3">
+        <div className="w-full md:w-2/3">
           <TutorialsList />
         </div>
       </div>
