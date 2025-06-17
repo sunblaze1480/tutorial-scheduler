@@ -2,9 +2,10 @@
 
 import TutorialModel from "../models/TutorialModel"
 import { useState } from "react"
-import { v4 as uuidv4 } from 'uuid';
+import { useTutorials } from "../context/TutorialsContext"
 
 export default function TutorialsForm() {
+    const { addTutorial } = useTutorials()
     const [tutorialData, setTutorialData] = useState(TutorialModel)
     const [isLoading, setIsLoading] = useState(false)
     const [isSuccess, setIsSuccess] = useState(false)
@@ -23,15 +24,9 @@ export default function TutorialsForm() {
         setIsLoading(true)
 
         try {
-            const newTutorial = {
-                ...tutorialData,
-                id: uuidv4()
-            }
+            // Use the context's addTutorial method
+            addTutorial(tutorialData)
             
-            const list = JSON.parse(localStorage.getItem("tutorials") || "[]")
-            const updatedList = [...list, newTutorial]
-            localStorage.setItem('tutorials', JSON.stringify(updatedList))
-
             // Clear the form
             setTutorialData(TutorialModel)
             setIsSuccess(true)

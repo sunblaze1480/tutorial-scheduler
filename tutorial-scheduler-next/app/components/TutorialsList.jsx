@@ -1,29 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useTutorials } from "../context/TutorialsContext"
 
 export default function TutorialsList() {
-    const [tutorials, setTutorials] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-
-    useEffect(() => {
-        // Simulate a small loading delay for better UX
-        const timer = setTimeout(() => {
-            const storedTutorials = JSON.parse(localStorage.getItem("tutorials") || "[]")
-            setTutorials(storedTutorials)
-            setIsLoading(false)
-        }, 300)
-        
-        return () => clearTimeout(timer)
-    }, [])
+    const { tutorials, isLoading, updateTutorialStatus } = useTutorials()
 
     const handleStatusChange = (e, id) => {
         const value = e.target.value
-        const updated = tutorials.map((tut) => 
-            tut.id === id ? {...tut, status: value} : tut
-        )
-        setTutorials(updated)
-        localStorage.setItem("tutorials", JSON.stringify(updated))
+        updateTutorialStatus(id, value)
     }
 
     const getStatusBadgeClass = (status) => {
