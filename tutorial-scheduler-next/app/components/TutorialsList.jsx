@@ -20,6 +20,7 @@ export default function TutorialsList() {
                 return "bg-gray-100 text-gray-800 border-gray-200"
         }
     }
+
     
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric' }
@@ -28,7 +29,7 @@ export default function TutorialsList() {
 
     return (
         <div className="w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-            <div className="bg-indigo-600 py-3 px-4 flex items-center justify-between">
+            <div className="section-background py-4 px-6 flex items-center justify-between">
                 <h2 className="text-lg font-bold text-white">My Tutorials</h2>
                 <div className="bg-white bg-opacity-20 rounded-full p-1">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">

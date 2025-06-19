@@ -42,7 +42,7 @@ export default function TutorialsForm() {
 
     return (
         <div className="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="bg-indigo-600 py-4 px-6 flex items-center justify-between">
+            <div className="section-background py-4 px-6 flex items-center justify-between">
                 <h2 className="text-xl font-bold text-white">Add New Tutorial</h2>
                 <div className="bg-white bg-opacity-20 rounded-full p-1">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">

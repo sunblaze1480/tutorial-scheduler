@@ -3,8 +3,8 @@
 :root {
   --background: #f3f4f6;
   --foreground: #171717;
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
+  --primary: #0052de;
+  --primary-hover: #0052de;
   --primary-light: #e0e7ff;
   --success: #10b981;
   --warning: #f59e0b;
@@ -19,6 +19,7 @@
   --gray-700: #374151;
   --gray-800: #1f2937;
   --gray-900: #111827;
+  --bg-color: #0052de;
 }
 
 @theme inline {
@@ -38,8 +39,7 @@ body {
 /* Form element styling */
 input, select, textarea {
   border: 1px solid var(--gray-300);
-  border-radius: 0.375rem;
-  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;  
   font-size: 0.875rem;
   line-height: 1.25rem;
   width: 100%;
@@ -82,4 +82,8 @@ button {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gray-400);
+}
+
+.section-background{
+  background-color: var(--bg-color);
 }
